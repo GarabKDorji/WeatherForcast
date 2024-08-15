@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Check</title>
+</head>
+<body>
+    <form action="/" method="POST">
+        <label for="place-name">Location:</label>
+        <input type="text" id="place-name" name="place" >
+       
+        <label for="country">Country:</label>
+        <select name="country" id="country" >  
+            <%if(locals.lists){%>
+                <%lists.forEach(list=>{%>
+                    <option value=<%=list%>><%=list%></option>
+                <%})}%>
+                
+        </select>
+        <input type="submit" >
+    </form>
+</body>
+</html>

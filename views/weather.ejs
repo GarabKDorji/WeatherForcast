@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+
+        }
+        form{
+            align-self: center;
+        }
+        .container{
+            min-width: 100vh;
+            display:flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+            gap: 30px;
+        }
+        .container-column{
+            
+            display:flex;
+            flex-direction: column;
+       
+            align-items: center;
+            text-align: center;
+        }
+        .temp-info {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+        }
+        .temp-info span {
+            flex: 1;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+
+    <% if (locals.main) { %>
+        <div class="container-column">
+            <h1><%= main[0].main %>  </h1>  
+            <h2><%= main[0].description %></h2>
+            <p class="temp-info">
+                <span>Temp: <%= mainTemp %>°F</span>
+                <span>Max: <%= mainMaxTemp %>°F</span>
+                <span>Min: <%= mainMinTemp %>°F</span>
+            </p>
+            <img src="https://openweathermap.org/img/wn/<%= main[0].icon %>@2x.png" alt="">
+            <%if(main[0].icon.charAt(2)==='n'){%>
+                <h3>Night</h3>
+            <%}else{%>
+                <h3>Day</h3>
+            <%}%>
+        </div>
+    <% }%>
+    <%if(locals.w){%>
+        <div class="container">
+            <%w.forEach(element => {%>
+                <div class="container-column">
+                    <h1><%=element.weather[0].main%></h1>
+                    <h2><%=element.weather[0].description%></h2>  
+                    <p class="temp-info">
+                        <span>Temp: <%= Math.round((element.main.temp - 273.15) * 9/5 + 32) %>°F</span>
+                        <span>Max: <%= Math.round((element.main.temp_max - 273.15) * 9/5 + 32)%>°F</span>
+                        <span>Min: <%= Math.round((element.main.temp_min - 273.15) * 9/5 + 32) %>°F</span>
+                    </p>
+                    <p>
+                        <p>Time: <%= new Date(element.dt_txt).toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true }) %> - <%= new Date(element.dt_txt).toLocaleDateString() %></p>
+                    </p>
+                    <img src="https://openweathermap.org/img/wn/<%= element.weather[0].icon %>@2x.png" alt="">
+                    <%console.log(element.weather[0].icon)%>
+                    <%if(element.weather[0].icon.charAt(2)==='n'){%>
+                        <h3>Night</h3>
+                    <%}else{%>
+                        <h3>Day</h3>
+                    <%}%>
+                
+                </div>
+                
+            <%})%>
+        </div>
+    <%}%>
+
+
+
+    <form  method="POST">
+        <label for="submit"></label>
+        <input type="submit" value="current weather" formaction="/get-current-weather">
+        <input type="submit" value="5 days weather forcast" formaction="/get-fivedays-forecast" >
+    </form>
+    <form method="GET">
+        <input type="submit" value="Home" formaction="/" >
+    </form>
+    
+</body>
+</html>
